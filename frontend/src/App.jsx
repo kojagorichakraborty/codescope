@@ -46,6 +46,13 @@ function App() {
     }
   };
 
+  const cardStyle = {
+    border: "1px solid lightgray",
+    borderRadius: "10px",
+    padding: "20px",
+    boxShadow: "0px 0px 10px rgba(0,0,0,0.1)"
+};
+
   return (
     <div
       style={{
@@ -84,23 +91,88 @@ function App() {
       {loading && <p>Analyzing repository...</p>}
 
       {analysisResult && (
-        <div
-          style={{
-            textAlign: "left",
-            marginTop: "30px"
-          }}
-        >
-          <h2>Analysis Result</h2>
 
-          <pre>
-            {JSON.stringify(
-              analysisResult,
-              null,
-              2
-            )}
-          </pre>
+        <div style={{ marginTop: "40px" }}>
+
+          <h2>Repository Analysis</h2>
+
+          <p>
+            Project: {analysisResult.project_name}
+          </p>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              gap: "20px",
+              marginTop: "20px"
+            }}
+          >
+
+            <div style={cardStyle}>
+              <h3>Total Python Files</h3>
+              <p>
+                {
+                  analysisResult.analysis.summary.total_python_files
+                }
+              </p>
+            </div>
+
+            <div style={cardStyle}>
+              <h3>Health Score</h3>
+              <p>
+                {
+                  analysisResult.analysis.summary.health_score
+                }
+              </p>
+            </div>
+
+            <div style={cardStyle}>
+              <h3>Cycles Found</h3>
+              <p>
+                {
+                  analysisResult.analysis.summary.total_cycles
+                }
+              </p>
+            </div>
+
+            <div style={cardStyle}>
+              <h3>Unused Modules</h3>
+              <p>
+                {
+                  analysisResult.analysis.summary.total_unused_modules
+                }
+              </p>
+            </div>
+
+          </div>
+
+          <div style={{ marginTop: "30px", textAlign: "left" }}>
+
+            <h3>Cycles</h3>
+
+            <pre>
+              {JSON.stringify(
+                analysisResult.analysis.issues.cycles,
+                null,
+                2
+              )}
+            </pre>
+
+            <h3>Unused Modules</h3>
+
+            <pre>
+              {JSON.stringify(
+                analysisResult.analysis.issues.unused_modules,
+                null,
+                2
+              )}
+            </pre>
+
+          </div>
 
         </div>
+
       )}
     </div>
   );
