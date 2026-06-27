@@ -9,6 +9,7 @@ CodeScope is a full-stack static code analysis platform that analyzes software r
 - Dependency graph construction
 - Circular dependency detection
 - Unused module detection
+- Coupling analysis and architecture warnings
 
 ## Tech Stack
 
