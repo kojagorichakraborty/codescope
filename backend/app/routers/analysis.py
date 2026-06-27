@@ -2,6 +2,7 @@ from fastapi import APIRouter, UploadFile, File
 import os
 import shutil
 import zipfile
+from app.services.analysis_service import analyze_repository
 
 router = APIRouter()
 
@@ -32,8 +33,12 @@ async def upload_project(file: UploadFile = File(...)):
     with zipfile.ZipFile(zip_path, "r") as zip_ref:
         zip_ref.extractall(project_extract_path)
 
+    analysis_result = analyze_repository(
+    project_extract_path
+    )
+
     return {
-        "message": "Project uploaded and extracted successfully",
+        "message": "Analysis completed successfully",
         "project_name": project_name,
-        "extract_location": project_extract_path
+        "analysis": analysis_result
     }
