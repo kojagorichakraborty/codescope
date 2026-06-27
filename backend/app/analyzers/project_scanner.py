@@ -1,11 +1,17 @@
 import os
 
-def scan_project(path):
-    files = []
+def scan_project(project_path):
 
-    for root, dirs, filenames in os.walk(path):
-        for file in filenames:
+    python_files = []
+
+    for root, dirs, files in os.walk(project_path):
+
+        for file in files:
+
             if file.endswith(".py"):
-                files.append(file)
 
-    return files
+                full_path = os.path.join(root, file)
+
+                python_files.append(full_path)
+
+    return python_files
