@@ -11,6 +11,7 @@ CodeScope is a full-stack static code analysis platform that analyzes software r
 - Unused module detection
 - Coupling analysis and architecture warnings
 - REST API for automated repository analysis
+- ZIP project upload support
 
 ## Tech Stack
 

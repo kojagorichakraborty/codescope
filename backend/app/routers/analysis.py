@@ -1,40 +1,23 @@
-from fastapi import APIRouter
-
-from app.analyzers.dependency_graph import build_graph
-from app.analyzers.cycle_detector import detect_cycles
-from app.analyzers.unused_module_detector import find_unused_modules
-from app.analyzers.coupling_analyzer import analyze_coupling
+from fastapi import APIRouter, UploadFile, File
+import os
+import shutil
 
 router = APIRouter()
 
 
-@router.post("/analyze")
-def analyze_project():
+@router.post("/upload")
+async def upload_project(file: UploadFile = File(...)):
 
-    dependencies = {
-        "A.py": ["B.py"],
-        "B.py": ["C.py"],
-        "C.py": ["A.py"],
-        "main.py": [
-            "utils.py",
-            "db.py",
-            "auth.py",
-            "config.py",
-            "logger.py"
-        ],
-        "helper.py": []
-    }
+    upload_dir = "uploads"
 
-    graph = build_graph(dependencies)
+    os.makedirs(upload_dir, exist_ok=True)
 
-    cycles = detect_cycles(graph)
+    file_path = os.path.join(upload_dir, file.filename)
 
-    unused_modules = find_unused_modules(graph)
-
-    highly_coupled = analyze_coupling(graph)
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
 
     return {
-        "cycles": cycles,
-        "unused_modules": unused_modules,
-        "highly_coupled": highly_coupled
+        "message": "Project uploaded successfully",
+        "filename": file.filename
     }
