@@ -14,6 +14,8 @@ CodeScope is a full-stack static code analysis platform that analyzes software r
 - ZIP project upload support
 - Automatic ZIP extraction for uploaded repositories
 - Automated static analysis of uploaded Python repositories
+- Repository health score generation
+- Architecture quality metrics
 
 ## Tech Stack
 

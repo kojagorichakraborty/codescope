@@ -30,10 +30,30 @@ def analyze_repository(project_path):
 
     highly_coupled = analyze_coupling(graph)
 
-    return {
+    health_score = 100
+
+    health_score -= len(cycles) * 10
+    health_score -= len(unused_modules) * 5
+    health_score -= len(highly_coupled) * 5
+
+    health_score = max(0, health_score)
+
+    summary = {
         "total_python_files": len(python_files),
-        "dependencies": dependencies,
+        "total_cycles": len(cycles),
+        "total_unused_modules": len(unused_modules),
+        "total_highly_coupled_modules": len(highly_coupled),
+        "health_score": health_score
+    }
+
+    issues = {
         "cycles": cycles,
         "unused_modules": unused_modules,
         "highly_coupled": highly_coupled
+    }
+
+    return {
+        "summary": summary,
+        "dependencies": dependencies,
+        "issues": issues
     }
