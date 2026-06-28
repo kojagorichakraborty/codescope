@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import DependencyGraph from "./components/DependencyGraph";
 
 function App() {
 
@@ -170,6 +171,14 @@ function App() {
             </pre>
 
           </div>
+
+          <h3>Dependency Graph</h3>
+
+          <DependencyGraph
+            dependencies={
+              analysisResult.analysis.dependencies
+            }
+          />
 
         </div>
 

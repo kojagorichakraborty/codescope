@@ -16,6 +16,8 @@ CodeScope is a full-stack static code analysis platform that analyzes software r
 - Automated static analysis of uploaded Python repositories
 - Repository health score generation
 - Architecture quality metrics
+- Interactive frontend dashboard for visualizing analysis results
+- Interactive dependency graph visualization using React Flow
 
 ## Tech Stack
 
