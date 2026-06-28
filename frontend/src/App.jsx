@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import DependencyGraph from "./components/DependencyGraph";
+import "./App.css";
 
 function App() {
 
@@ -20,7 +21,6 @@ function App() {
     }
 
     const formData = new FormData();
-
     formData.append("file", selectedFile);
 
     try {
@@ -37,7 +37,6 @@ function App() {
     } catch (error) {
 
       console.error(error);
-
       alert("Upload failed.");
 
     } finally {
@@ -47,108 +46,100 @@ function App() {
     }
   };
 
-  const cardStyle = {
-    border: "1px solid lightgray",
-    borderRadius: "10px",
-    padding: "20px",
-    boxShadow: "0px 0px 10px rgba(0,0,0,0.1)"
-};
-
   return (
-    <div
-      style={{
-        maxWidth: "700px",
-        margin: "100px auto",
-        textAlign: "center",
-        padding: "30px",
-        border: "1px solid lightgray",
-        borderRadius: "10px"
-      }}
-    >
-      <h1>CodeScope</h1>
 
-      <p>Repository Analysis Platform</p>
+    <div className="container">
 
-      <input
-        type="file"
-        accept=".zip"
-        onChange={handleFileChange}
-      />
+      <div className="hero">
 
-      <br /><br />
+        <h1 className="title">
+          <span className="gradient-text">
+            CodeScope
+          </span>
+        </h1>
 
-      <button onClick={handleUpload}>
-        Upload
-      </button>
-
-      <br /><br />
-
-      {selectedFile && (
-        <p>
-          Selected File: {selectedFile.name}
+        <p className="subtitle">
+          Analyze repositories. Detect architectural issues.
+          Visualize dependencies. Improve code quality.
         </p>
-      )}
 
-      {loading && <p>Analyzing repository...</p>}
+        <div className="upload-section">
+
+          <input
+            className="file-input"
+            type="file"
+            accept=".zip"
+            onChange={handleFileChange}
+          />
+
+          <button
+            className="upload-button"
+            onClick={handleUpload}
+          >
+            Analyze Repository
+          </button>
+
+        </div>
+
+        {selectedFile && (
+          <p className="selected-file">
+            Selected File: {selectedFile.name}
+          </p>
+        )}
+
+        {loading && (
+          <p className="loading-text">
+            Analyzing repository...
+          </p>
+        )}
+
+      </div>
 
       {analysisResult && (
 
-        <div style={{ marginTop: "40px" }}>
+        <div className="section">
 
-          <h2>Repository Analysis</h2>
+          <h2 className="section-title">
+            Analysis Results
+          </h2>
 
-          <p>
+          <p className="project-name">
             Project: {analysisResult.project_name}
           </p>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(2, 1fr)",
-              gap: "20px",
-              marginTop: "20px"
-            }}
-          >
+          <div className="cards-grid">
 
-            <div style={cardStyle}>
+            <div className="card">
               <h3>Total Python Files</h3>
               <p>
-                {
-                  analysisResult.analysis.summary.total_python_files
-                }
+                {analysisResult.analysis.summary.total_python_files}
               </p>
             </div>
 
-            <div style={cardStyle}>
+            <div className="card">
               <h3>Health Score</h3>
               <p>
-                {
-                  analysisResult.analysis.summary.health_score
-                }
+                {analysisResult.analysis.summary.health_score}
               </p>
             </div>
 
-            <div style={cardStyle}>
+            <div className="card">
               <h3>Cycles Found</h3>
               <p>
-                {
-                  analysisResult.analysis.summary.total_cycles
-                }
+                {analysisResult.analysis.summary.total_cycles}
               </p>
             </div>
 
-            <div style={cardStyle}>
+            <div className="card">
               <h3>Unused Modules</h3>
               <p>
-                {
-                  analysisResult.analysis.summary.total_unused_modules
-                }
+                {analysisResult.analysis.summary.total_unused_modules}
               </p>
             </div>
 
           </div>
 
-          <div style={{ marginTop: "30px", textAlign: "left" }}>
+          <div className="issue-box">
 
             <h3>Cycles</h3>
 
@@ -172,17 +163,22 @@ function App() {
 
           </div>
 
-          <h3>Dependency Graph</h3>
+          <div className="graph-container">
 
-          <DependencyGraph
-            dependencies={
-              analysisResult.analysis.dependencies
-            }
-          />
+            <h3>Dependency Graph</h3>
+
+            <DependencyGraph
+              dependencies={
+                analysisResult.analysis.dependencies
+              }
+            />
+
+          </div>
 
         </div>
 
       )}
+
     </div>
   );
 }
