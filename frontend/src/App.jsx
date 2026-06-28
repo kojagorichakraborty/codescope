@@ -36,10 +36,23 @@ function App() {
 
     } catch (error) {
 
-      console.error(error);
-      alert("Upload failed.");
+        console.error(error);
 
-    } finally {
+        if (error.response) {
+
+          alert(
+            "Backend error occurred while analyzing repository."
+          );
+
+        } else {
+
+          alert(
+            "Could not connect to backend server."
+          );
+
+        }
+
+      } finally {
 
       setLoading(false);
 

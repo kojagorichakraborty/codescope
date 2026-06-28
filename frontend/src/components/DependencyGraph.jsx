@@ -1,5 +1,9 @@
-import React from "react";
-import ReactFlow from "reactflow";
+import ReactFlow, {
+  Background,
+  Controls,
+  MiniMap
+} from "reactflow";
+
 import "reactflow/dist/style.css";
 
 function DependencyGraph({ dependencies }) {
@@ -7,7 +11,7 @@ function DependencyGraph({ dependencies }) {
   const nodes = [];
   const edges = [];
 
-  let xPosition = 100;
+  let yPosition = 0;
 
   Object.keys(dependencies).forEach((file, index) => {
 
@@ -15,17 +19,35 @@ function DependencyGraph({ dependencies }) {
       id: file,
       data: { label: file },
       position: {
-        x: xPosition,
-        y: index * 100
+        x: 0,
+        y: yPosition
       }
     });
 
-    dependencies[file].forEach((dependency) => {
+    yPosition += 100;
+
+    dependencies[file].forEach((dependency, depIndex) => {
+
+      if (
+        !nodes.find(node => node.id === dependency)
+      ) {
+
+        nodes.push({
+          id: dependency,
+          data: { label: dependency },
+          position: {
+            x: 350,
+            y: depIndex * 100
+          }
+        });
+
+      }
 
       edges.push({
         id: `${file}-${dependency}`,
         source: file,
-        target: dependency
+        target: dependency,
+        animated: true
       });
 
     });
@@ -33,20 +55,33 @@ function DependencyGraph({ dependencies }) {
   });
 
   return (
+
     <div
       style={{
         width: "100%",
-        height: "500px",
-        border: "1px solid lightgray",
+        height: "600px",
+        backgroundColor: "#111",
+        borderRadius: "25px",
         marginTop: "30px"
       }}
     >
+
       <ReactFlow
         nodes={nodes}
         edges={edges}
-      />
+        fitView
+      >
+
+        <MiniMap />
+        <Controls />
+        <Background />
+
+      </ReactFlow>
+
     </div>
+
   );
+
 }
 
 export default DependencyGraph;
